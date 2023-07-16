@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+spec:
+  selector:
+    matchLabels:
+      app: product-service
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: product-service
+    spec:
+      containers:
+      - name: product-service
+        image: regoo707/product-service
+        envFrom:
+        - configMapRef:
+            name: product-service-cm
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80

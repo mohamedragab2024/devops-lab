@@ -1,0 +1,28 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: product-service
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`dotnetapi.ragab.blog`)
+      priority: 10
+      services:
+        - name: product-service
+          port: 80
+  tls:
+    secretName: dotnet-tls-secret
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: dotnet-cert
+spec:
+  secretName: dotnet-tls-secret
+  issuerRef:
+    name: le-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - dotnetapi.ragab.blog

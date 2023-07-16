@@ -1,0 +1,13 @@
+resource_group_location = "eastus"
+resource_group_name_prefix = "aks-rg"
+resource_name = "hands-on-lab-aks"
+dns_prefix =  "hands-on-lab-dns-aks"
+node_name_perfix = "myaksnode"
+max_node_count = 5
+min_node_count = 3
+vm_size = "Standard_B2s"
+network_plugin = "azure"
+network_policy = "calico"
+load_balancer_sku = "standard"
+os_disk_size_gb = "50"
+default_pool_type = "VirtualMachineScaleSets"
