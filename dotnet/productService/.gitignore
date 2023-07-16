@@ -1,0 +1,24 @@
+# .NET Core
+*.dll
+*.exe
+*.pdb
+*.dll.config
+*.user.secrets
+*.rptproj.user
+/.vs
+/.build/
+/build/
+/bin
+/obj
+# Visual Studio Code
+.vscode/
+
+# JetBrains Rider
+.idea/
+
+# macOS
+.DS_Store
+
+# NuGet
+*.nuget.props
+*.nuget.targets
