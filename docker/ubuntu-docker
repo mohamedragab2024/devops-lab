@@ -1,0 +1,10 @@
+FROM  ubuntu
+RUN apt-get update
+RUN apt-get install -y apt-transport-https ca-certificates curl
+RUN apt-get install -y gnupg
+RUN curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+RUN echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
+RUN apt-get update
+RUN apt-get install -y kubectl
+RUN apt update
+RUN apt install python3  -y
