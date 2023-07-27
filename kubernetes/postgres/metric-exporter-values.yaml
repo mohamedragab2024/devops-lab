@@ -1,0 +1,5 @@
+config:
+  datasource:
+    host: 'postgres.postgres.svc.cluster.local'
+    user: postgres
+    password: postgres

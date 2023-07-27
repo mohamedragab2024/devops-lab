@@ -1,0 +1,13 @@
+prometheus:
+ prometheusSpec:
+   additionalScrapeConfigs:
+    - job_name: postgres-exporter
+      static_configs:
+        - targets: ['prometheus-postgres-exporter:80']
+grafana:
+  persistence:
+    enabled: true
+    storageClassName: managed-premium
+    size: "1Gi"
+  service:
+   type: LoadBalancer
