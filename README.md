@@ -17,8 +17,7 @@ Number | Topic | link
 
 <!-- </div> -->
 
-
-⚓️ Azure
+☁️ Azure
 -------
 <details>
 <summary>Click me</summary>
@@ -70,7 +69,7 @@ RUN apt install python3  -y
 
 
 [playlist-link]: https://www.youtube.com/watch?v=f85XlAjbS5w&list=PLTRDUPO2OmInz2Fo41zwnoR1IArx70Hig
-[azure-link]: #-azure
+[azure-link]: #%EF%B8%8F-azure
 [docker-link]: #-docker
 [dotnet-link]: #-dotnet
 [gitlab-link]: #-gitlab
