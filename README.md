@@ -69,8 +69,8 @@ RUN apt install python3  -y
 
 
 [playlist-link]: https://www.youtube.com/watch?v=f85XlAjbS5w&list=PLTRDUPO2OmInz2Fo41zwnoR1IArx70Hig
-[azure-link]: https://github.dev/ragoob/devops-lab/tree/main/README.md#-azure
-[docker-link]: https://github.dev/ragoob/devops-lab/tree/main/README.md#-docker
-[dotnet-link]: https://github.dev/ragoob/devops-lab/tree/main/README.md#-dotnet
-[gitlab-link]: https://github.dev/ragoob/devops-lab/tree/main/README.md#-gitlab
-[kubernetes-link]: https://github.dev/ragoob/devops-lab/tree/main/README.md#-kubernetes
+[azure-link]: #-azure
+[docker-link]: #-docker
+[dotnet-link]: #-dotnet
+[gitlab-link]: #-gitlab
+[kubernetes-link]: #-kubernetes
