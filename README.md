@@ -17,7 +17,8 @@ Number | Topic | link
 
 <!-- </div> -->
 
-☁️ Azure 
+
+⚓️ Azure
 -------
 <details>
 <summary>Click me</summary>
