@@ -1,1 +1,1 @@
-- [HA postgres cluster via patroni](patroni/README.md)
+- [HA postgres cluster via patroni](patroni)
