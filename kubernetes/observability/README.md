@@ -1,2 +1,2 @@
-- [Metrics](metrics/README.md)
-- [Distributed tracing](tracing/README.md)
+- [Metrics](metrics)
+- [Distributed tracing](tracing)
