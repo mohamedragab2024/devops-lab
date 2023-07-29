@@ -1,3 +1,4 @@
+## Install nginx ingress controller native
 ```
 git clone https://github.com/nginxinc/kubernetes-ingress.git --branch v3.2.0
 cd kubernetes-ingress/deployments
@@ -28,7 +29,7 @@ kubectl apply -f daemon-set/nginx-ingress.yaml
 kubectl apply -f service/loadbalancer.yaml
 
 ```
-
+## Install nginx ingress controller using helm
 ```
 #Using Helm
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx

@@ -122,3 +122,136 @@ https://gitlab.com/{USER_NAME}/{REPO_NAME}/badges/main/coverage.svg
 https://sonarcloud.io/api/project_badges/measure?project={YOUR_SONAR_PROJECT_NAME}&metric=alert_status
 
 ```
+## GitLab CLI create the following file in your app repository
+```
+image: docker:20.10.16
+variables:
+   DOCKER_TLS_CERTDIR: "/certs"
+services:
+  - docker:20.10.16-dind
+stages:
+  - build
+  - test
+  - sonarqube
+  - docker-build
+  - release
+  - deploy
+
+build_job:
+  stage: build
+  image: golang:alpine
+  tags:
+  - devops
+  script:
+    - go get .
+    - go build
+  only:
+    - tags
+    - main
+    - develop
+    - merge_requests
+test_job:
+  stage: test
+  image: golang:alpine
+  tags:
+  - devops
+  script:
+    - go get .
+    - go test ./... -coverprofile=coverage-report.out
+    - go tool cover -html=coverage-report.out -o coverage-report.html
+    - go tool cover -func=coverage-report.out
+  artifacts:
+    paths:
+      - coverage-report.html
+      - coverage-report.out
+    expire_in: 1 hour
+  coverage: "/\\(statements\\)\\s+\\d+.?\\d+%/"
+  only:
+    - tags
+    - main
+    - develop
+    - merge_requests
+sonarqube_job:
+  stage: sonarqube
+  tags:
+  - devops
+  image: 
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0" 
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script: 
+    - sonar-scanner
+  allow_failure: true
+  only:
+    - merge_requests
+    - main
+docker_job:
+  stage: docker-build
+  tags:
+  - devops
+  script:
+  - |
+      if [[ -z "${CI_COMMIT_TAG}" ]]; then
+        export VERSION_TAG="${CI_COMMIT_SHORT_SHA}"
+      else
+        export VERSION_TAG="${CI_COMMIT_TAG//v}"
+      fi
+  - docker build -t $DOKCER_IMAGE_NAME:$VERSION_TAG .
+  - echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin
+  - docker push $DOKCER_IMAGE_NAME:$VERSION_TAG
+
+  only:
+    - tags
+    - develop
+release_job:
+  stage: release
+  image: node
+  tags:
+  - devops
+  script:
+  - npm -g install @semantic-release/git semantic-release @semantic-release/changelog && semantic-release
+  only:
+   - main
+   - /^(([0–9]+)\.)?([0–9]+)\.x/
+
+update_k8s_config_job:
+  stage: deploy
+  image: ubuntu
+  tags:
+  - devops
+  before_script:
+  - apt update
+  - apt install git -y && apt install curl -y
+  script:
+  - |
+      if [[ -z "${CI_COMMIT_TAG}" ]]; then
+        export VERSION_TAG="${CI_COMMIT_SHORT_SHA}"
+      else
+        export VERSION_TAG="${CI_COMMIT_TAG//v}"
+      fi
+  - echo ${VERSION_TAG}
+  - git clone https://gitlab-ci-token:${GITLAB_TOKEN}@$CONFIG_REPOSITORY_URL
+  - cd gitops-config
+  - git config --global user.email $GIT_CONFIG_EMAIL
+  - git config --global user.name $GIT_CONFIG_NAME
+  - git checkout -b release
+  - cd overlay/prod && sed -i "s/^ *newTag:.*/  newTag:${VERSION_TAG}/" kustomization.yaml
+  - git add . && git commit -am "Add new build version ${VERSION_TAG}"
+  - git push  --set-upstream origin release
+  - |
+      curl --request POST --header "PRIVATE-TOKEN: $MR_CREATOR_TOKEN" \
+           --form "source_branch=release" \
+           --form "target_branch=main" \
+           --form "title=[CI update] New release ${VERSION_TAG}" \
+           --form "description=New release to be reviewed and promoted ${VERSION_TAG}" \
+           "https://gitlab.com/api/v4/projects/$CONFIG_PROJECT_ID/merge_requests"
+  only:
+   - tags
+
+```

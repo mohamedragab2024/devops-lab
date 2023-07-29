@@ -1,4 +1,4 @@
-### Install 
+### Install Postgres HA cluster using Patroni
 
 ```
 # First, clone the repository and change to the directory

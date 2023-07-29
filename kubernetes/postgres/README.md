@@ -1,0 +1,1 @@
+- [HA postgres cluster via patroni](patroni/README.md)

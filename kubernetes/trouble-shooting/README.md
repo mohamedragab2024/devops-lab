@@ -1,0 +1,1 @@
+- [Delete suck namespaces](delete-terminating-stuck-resources/README.md)
