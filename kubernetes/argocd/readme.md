@@ -129,5 +129,5 @@ spec:
     automated:
       selfHeal: true
 ```
-## [Run db migration job before every application sync ](argocd-hooks-example/README.md)
+## [Run db migration job before every application sync ](argocd-hooks-example)
 
