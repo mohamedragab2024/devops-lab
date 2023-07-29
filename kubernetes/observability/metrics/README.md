@@ -1,1 +1,1 @@
-- [prometheus and grafana](prometheus/README.md)
+- [prometheus and grafana](prometheus)

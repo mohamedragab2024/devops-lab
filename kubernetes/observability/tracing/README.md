@@ -1,1 +1,1 @@
-- [Jaeger](jaeger-distributed-tracing/README.md)
+- [Jaeger](jaeger-distributed-tracing)
