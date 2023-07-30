@@ -255,3 +255,4 @@ update_k8s_config_job:
    - tags
 
 ```
+### [Complete CI pipeline for Arabic speaker](https://www.youtube.com/watch?v=Sv9lZ2cO9E8&t=1375s)
