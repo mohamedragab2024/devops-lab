@@ -1,5 +1,5 @@
-# GitLab CI
-## Requirements
+# GitLab Complete CI including static code analysis and semantic versioning
+## Install GitLab Runner
 - GitLab Runner machine to handle the CI stages with docker installed
 ```
 Linux install 
