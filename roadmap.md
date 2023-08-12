@@ -9,6 +9,7 @@
 - Performance Monitoring
 - Text Manipulation
 - Bash Scripting
+- Networking and security
 
 ### Web Servers and Reverse Proxies
 - Nginx
