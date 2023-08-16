@@ -30,7 +30,8 @@
 - Azure or AWS
 
 ### Service Mesh
-- Linkerd or Istio
+- Linkerd
+- Istio
 
 ### Observability
 - Monitoring and Metrics (Prometheus and Grafana)
@@ -43,11 +44,12 @@
 
 ### Secret Management
 - HashiCorp Vault
+- External secrets
 
 ### Infrastructure as Code
 - Terraform
 - Ansible
 
 ### Cloud Design Patterns
-- elastic scale
-- Availability 
+- Elastic scale
+- Availability
