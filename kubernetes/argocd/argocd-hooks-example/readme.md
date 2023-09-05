@@ -1,4 +1,5 @@
 ## Use ARGOCD hook to run .net ef core db migration job before sync new application version 
+## Notes for real and on production case do not store stuff like Connection string in git instead use sealed secrets or vault
    In your config in base of kustomize add the following job 
    ```
 apiVersion: batch/v1
