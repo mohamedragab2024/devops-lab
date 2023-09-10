@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-ingress
+  labels:
+    name: demo-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "le-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - demo-service.ragab.blog
+    secretName: demo-service-tls
+  rules:
+  - host: demo-service.ragab.blog
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: blue-service
+            port: 
+              number: 80

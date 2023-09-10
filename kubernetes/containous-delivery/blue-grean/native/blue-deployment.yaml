@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: blue
+ namespace: blue-green-app
+spec:
+  replicas: 2
+  selector:
+   matchLabels:
+    app: blue
+  template:
+   metadata:
+    labels:
+     app: blue
+   spec:
+    containers:
+    - name: blue-app
+      image:  regoo707/catalog-service:1.2.1
