@@ -121,6 +121,6 @@ kubectl create namespace devops-lab-demos
 
 
 argocd proj create devops-lab-demos -d https://kubernetes.default.svc,devops-lab-demos -s $CONFIG_REPO
-
+kubectl apply -f canary-demo-argo-proj.yaml -n argocd
 
 ```

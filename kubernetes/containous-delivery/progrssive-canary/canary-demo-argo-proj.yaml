@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: canary-demo-web
+spec:
+  destination:
+    name: ''
+    namespace: devops-lab-demos
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: kubernetes/containous-delivery/progrssive-canary/config/overlays/dev
+    repoURL: 'https://github.com/ragoob/devops-lab.git'
+    targetRevision: HEAD
+  sources: []
+  project: devops-lab-demos
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
