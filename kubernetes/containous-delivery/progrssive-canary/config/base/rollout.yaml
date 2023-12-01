@@ -9,6 +9,8 @@ spec:
       app: canary-demo-web
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         app: canary-demo-web
     spec:
