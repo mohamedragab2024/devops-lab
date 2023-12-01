@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: canary-demo-web
+  name: canary-demo-web-canary
   namespace: devops-lab-demos
   annotations:
     nginx.ingress.kubernetes.io/service-upstream: "true"
