@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: canary-demo-web
   namespace: devops-lab-demos
+   annotations:
+    nginx.ingress.kubernetes.io/service-upstream: "true"
 spec:
   ingressClassName: "nginx"
   rules:

@@ -2,8 +2,6 @@ kind: Service
 apiVersion: v1
 metadata:
   name:  canary-demo-web
-  annotations:
-        linkerd.io/inject: enabled
 spec:
   selector:
     app:  canary-demo-web
