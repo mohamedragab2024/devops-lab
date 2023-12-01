@@ -8,6 +8,7 @@ spec:
     matchLabels:
       app: canary-demo-web
   template:
+    metadata:
       labels:
         app: canary-demo-web
     spec:
