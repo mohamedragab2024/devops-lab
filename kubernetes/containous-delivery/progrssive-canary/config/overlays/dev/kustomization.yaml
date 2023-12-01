@@ -4,4 +4,4 @@ resources:
 - ../../base
 images:
 - name: regoo707/canary-demo-web
-  newTag: 1.0.0
+  newTag: 1.0.1
