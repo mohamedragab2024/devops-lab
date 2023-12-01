@@ -15,7 +15,7 @@ spec:
         address: http://prometheus.linkerd-viz.svc.cluster.local:9090
         timeout: 40
         query: |
-          sum(irate(response_total{direction = "inbound", app="{{args.app-name}}", classification="success"}[1m]))
+          sum(irate(response_total{direction = "inbound", app="{{args.service-name}}", classification="success"}[1m]))
           /
-          sum(irate(response_total{direction = "inbound",app="{{args.app-name}}"}[1m]))
+          sum(irate(response_total{direction = "inbound",app="{{args.service-name}}"}[1m]))
 

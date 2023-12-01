@@ -26,7 +26,7 @@ spec:
         - templateName: success-rate
         startingStep: 2
         args:
-        - name: app-name
+        - name: service-name
           value: canary-demo-web
       steps:
       - setWeight: 20
