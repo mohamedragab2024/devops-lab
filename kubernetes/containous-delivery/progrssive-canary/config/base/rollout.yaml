@@ -21,7 +21,7 @@ spec:
   revisionHistoryLimit: 3
   strategy:
     canary:
-      canaryService: canary-demo-web-canary
+      canaryService: canary-demo-web
       stableService: canary-demo-web
       trafficRouting:
         nginx:
