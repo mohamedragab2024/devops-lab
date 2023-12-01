@@ -1,4 +1,7 @@
 # Progessive Canary deployment using template analysis
+
+![Architecture](architecture.png)
+
 ## Requirments tools
 - Kubernetes cluster
 ```
