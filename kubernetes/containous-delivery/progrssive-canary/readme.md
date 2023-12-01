@@ -292,3 +292,19 @@ sum(irate(response_total{direction = "inbound", app="{{args.service-name}}"}[1m]
 -  However, if the query yields insufficient results, a rollback to version 1.0.0 will commence, and the progression of the canary deployment will be halted."
 
 
+- To check progress of canary deployment 
+```
+ kubectl argo rollouts get rollout canary-demo-web -n devops-lab-demos -w
+
+```
+You should see
+![canary progressive](argorollout-cli.png)
+
+You can also use ArgoRollouts dashboard
+```
+kubectl argo rollouts dashboard
+
+```
+Then open http://localhost:3100/rollouts
+You should see
+![canary progressive UI](argorollout-ui.png)
