@@ -15,7 +15,7 @@ func main() {
     <head>
         <title>Green deployment</title>
     </head>
-    <body style="background:#4CAF50">
+    <body style="background:blue">
         <h1>Simple Go web app!</h1>
         <p>Welcome to green version</p>
         
