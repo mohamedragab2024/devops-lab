@@ -18,7 +18,7 @@ kubectl patch svc ingress-nginx-controller -n ingress-nginx -p '{"spec": {"type"
 # Now you can use output of minikube ip from your browser you will redirect to nginx default page
 
 ```
-- Install service-mesh solution for this demo we use (Linkerd)
+- Install service-mesh solution for this demo we use (Linkerd) for easy collect metric about services
 ```
 # Install linkrd ctl 
 curl --proto '=https' --tlsv1.2 -sSfL https://run.linkerd.io/install | sh
@@ -93,6 +93,8 @@ spec:
             port:
               name: https
 
+# to access the local ingress edit /etc/hosts and add the dns record with the ip of minikube 
+
 # We can also use LoadBalancer IP with argocd PORT
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 
@@ -125,10 +127,168 @@ argocd repo add $CONFIG_REPO
 # Create application namespace
 
 kubectl create namespace devops-lab-demos
+
+# Inject devops-lab-demos namespace with linkerd proxy sidecar
+kubectl annotate namespace devops-lab-demos linkerd.io/inject=enabled
+
 # create argocd project
 
 
 argocd proj create devops-lab-demos -d https://kubernetes.default.svc,devops-lab-demos -s $CONFIG_REPO
-kubectl apply -f canary-demo-argo-proj.yaml -n argocd
+# Create argocd app to sync k8s objects 
+kubectl apply -f canary-demo-argo-app.yaml -n argocd
+# Note : You can create app using argocd UI
+```
+# Explain K8s manifest
+ - Using Kustomize 
+ we have the following objects
+ - argorollout which is replacement of traditional k8s deployment object but allow extra deployment
+   stratgies such as blue-green, canary , progressive
+ ```
+ apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: canary-demo-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: canary-demo-web
+  template:
+    metadata:
+      labels:
+        app: canary-demo-web
+    spec:
+      containers:
+      - name: canary-demo-web
+        image: regoo707/canary-demo-web:1.0.0
+        ports:
+        - containerPort: 3000
+  minReadySeconds: 30
+  revisionHistoryLimit: 3
+  strategy:
+    canary:
+      canaryService: canary-demo-web-canary  # canary backend service use to split traffic
+      stableService: canary-demo-web-stable  # stable backend service
+      trafficRouting:
+        nginx:
+          stableIngress: canary-demo-web
+      analysis:
+        templates:
+        - templateName: success-rate  # analysis template object name
+        startingStep: 2
+        args:
+        - name: service-name
+          value: canary-demo-web
+      steps:
+      - setWeight: 20
+      - pause: {duration: 2m}
+      - setWeight: 40
+      - pause: {duration: 3m}
+      - setWeight: 60
+      - pause: {duration: 4m}
+      - setWeight: 80
+      - pause: {duration: 5m}
+ ``` 
+ - Two service objects one for stable ingress and the other one for canary ingress 
+   that argorollout controller will create it on the fly to control the traffic
+  ```
+  kind: Service
+apiVersion: v1
+metadata:
+  name:  canary-demo-web-stable
+spec:
+  selector:
+    app:  canary-demo-web
+  type:  ClusterIP
+  ports:
+  - name:  http
+    port:  80
+    targetPort:  3000
+  ---
+  kind: Service
+apiVersion: v1
+metadata:
+  name:  canary-demo-web-canary
+spec:
+  selector:
+    app:  canary-demo-web
+  type:  ClusterIP
+  ports:
+  - name:  http
+    port:  80
+    targetPort:  3000
+  ```
+- Ingress for stable service (The canary one will create and mange by argorollout controller)
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: canary-demo-web
+  namespace: devops-lab-demos
+  annotations:
+    nginx.ingress.kubernetes.io/service-upstream: "true"
+spec:
+  ingressClassName: "nginx"
+  rules:
+  - host: canary-demo-web.ragab.biz
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: canary-demo-web-stable
+            port:
+              name: http
+```
+- Analysis template used as source of health of deployment we use prometheus http sucess response / total response 
+```
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: success-rate
+spec:
+  args:
+  - name: service-name
+  metrics:
+  - name: success-rate
+    interval: 1m
+    successCondition: result[0] >= 0.95
+    failureLimit: 3
+    provider:
+      prometheus:
+        address: http://prometheus.linkerd-viz.svc.cluster.local:9090 # prometheus instance from linkerd-viz
+        timeout: 40
+        query: |
+          sum(irate(response_total{direction = "inbound", app="{{args.service-name}}",status_code !~"5.*"}[1m]))
+          /
+          sum(irate(response_total{direction = "inbound",app="{{args.service-name}}"}[1m]))
 
 ```
+- Overlays for kustomize environments 
+
+# Explain 
+-  When deploying a new version (e.g., 1.0.1), ArgoRollout dynamically generates a canary ingress with two distinct annotations for nginx:
+
+```
+nginx.ingress.kubernetes.io/canary: "true"
+nginx.ingress.kubernetes.io/canary-weight: "0"
+# https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#canary
+```
+
+-  This facilitates traffic division between the stable version 1.0.0 and the new version 1.0.1, leveraging a Prometheus query result:
+
+```
+sum(irate(response_total{direction = "inbound", app="{{args.service-name}}", status_code !~ "5.*"}[1m]))
+/
+sum(irate(response_total{direction = "inbound", app="{{args.service-name}}"}[1m]))
+
+```
+
+
+-  Under successful conditions, the nginx.ingress.kubernetes.io/canary-weight will increment based on the step template provided in the analysis. This involves incremental increases at 20%, 40%, and 60% until version 1.0.0 is entirely replaced by 1.0.1. Simultaneously, the routing of traffic to 1.0.0 will cease, and all replica pods running 1.0.0 will be stopped.
+
+-  However, if the query yields insufficient results, a rollback to version 1.0.0 will commence, and the progression of the canary deployment will be halted."
+
+

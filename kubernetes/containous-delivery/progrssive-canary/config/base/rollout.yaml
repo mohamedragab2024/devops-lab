@@ -21,14 +21,14 @@ spec:
   revisionHistoryLimit: 3
   strategy:
     canary:
-      canaryService: canary-demo-web-canary
-      stableService: canary-demo-web-stable
+      canaryService: canary-demo-web-canary  # canary backend service use to split traffic
+      stableService: canary-demo-web-stable  # stable backend service
       trafficRouting:
         nginx:
           stableIngress: canary-demo-web
       analysis:
         templates:
-        - templateName: success-rate
+        - templateName: success-rate  # analysis template object name
         startingStep: 2
         args:
         - name: service-name
