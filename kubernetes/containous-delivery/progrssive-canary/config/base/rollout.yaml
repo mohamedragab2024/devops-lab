@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: canary-demo-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: canary-demo-web
+  template:
+    metadata:
+      labels:
+        app: canary-demo-web
+    spec:
+      containers:
+      - name: canary-demo-web
+        image: regoo707/canary-demo-web:1.0.0
+        ports:
+        - containerPort: 3000
+  minReadySeconds: 30
+  revisionHistoryLimit: 3
+  strategy:
+    canary:
+      analysis:
+        templates:
+        - templateName: success-rate
+        startingStep: 2
+        args:
+        - name: service-name
+          value: canary-demo-web.devops-lab-demos.svc.cluster.local
+      steps:
+      - setWeight: 20
+      - pause: {duration: 10m}
+      - setWeight: 40
+      - pause: {duration: 10m}
+      - setWeight: 60
+      - pause: {duration: 10m}
+      - setWeight: 80
+      - pause: {duration: 10m}
