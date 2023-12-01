@@ -22,7 +22,7 @@ spec:
   strategy:
     canary:
       canaryService: canary-demo-web-canary
-      stableService: canary-demo-web
+      stableService: canary-demo-web-stable
       trafficRouting:
         nginx:
           stableIngress: canary-demo-web
