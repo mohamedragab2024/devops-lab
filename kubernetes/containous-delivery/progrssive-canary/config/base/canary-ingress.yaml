@@ -6,7 +6,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/service-upstream: "true"
     nginx.ingress.kubernetes.io/canary: "true"
-    nginx.ingress.kubernetes.io/canary-weight: "10"
+    nginx.ingress.kubernetes.io/canary-weight: "0"
 spec:
   ingressClassName: "nginx"
   rules:
@@ -17,6 +17,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: canary-demo-web
+            name:  canary-demo-web-canary
             port:
               name: http

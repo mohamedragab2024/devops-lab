@@ -21,6 +21,11 @@ spec:
   revisionHistoryLimit: 3
   strategy:
     canary:
+      canaryService: canary-demo-web-canary
+      stableService: canary-demo-web
+      trafficRouting:
+        nginx:
+          stableIngress: canary-demo-web
       analysis:
         templates:
         - templateName: success-rate
