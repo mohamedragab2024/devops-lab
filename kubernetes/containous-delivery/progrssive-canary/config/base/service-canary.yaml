@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name:  canary-demo-web-stable
+  name:  canary-demo-web-canary
 spec:
   selector:
     app:  canary-demo-web

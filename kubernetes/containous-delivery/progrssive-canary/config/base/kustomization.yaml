@@ -4,4 +4,5 @@ resources:
 - analysis-template.yaml
 - rollout.yaml
 - service.yaml
+- service-canary.yaml
 - ingress.yaml
