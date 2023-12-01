@@ -15,6 +15,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: canary-demo-web
+            name: canary-demo-web-stable
             port:
               name: http
