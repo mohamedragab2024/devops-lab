@@ -7,7 +7,7 @@ spec:
   - name: service-name
   metrics:
   - name: success-rate
-    interval: 5m
+    interval: 1m
     successCondition: result[0] >= 0.95
     failureLimit: 3
     provider:
@@ -15,7 +15,7 @@ spec:
         address: http://prometheus.linkerd-viz.svc.cluster.local:9090
         timeout: 40
         query: |
-          sum(irate(response_total{direction = "inbound", app="{{args.service-name}}", classification="success"}[1m]))
+          sum(irate(response_total{direction = "inbound", app="{{args.service-name}}",status_code !~"5.*"}[1m]))
           /
           sum(irate(response_total{direction = "inbound",app="{{args.service-name}}"}[1m]))
 

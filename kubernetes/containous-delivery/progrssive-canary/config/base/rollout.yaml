@@ -30,10 +30,10 @@ spec:
           value: canary-demo-web
       steps:
       - setWeight: 20
-      - pause: {duration: 10m}
+      - pause: {duration: 2m}
       - setWeight: 40
-      - pause: {duration: 10m}
+      - pause: {duration: 3m}
       - setWeight: 60
-      - pause: {duration: 10m}
+      - pause: {duration: 4m}
       - setWeight: 80
-      - pause: {duration: 10m}
+      - pause: {duration: 5m}
