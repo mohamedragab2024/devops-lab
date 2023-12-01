@@ -26,8 +26,8 @@ spec:
         - templateName: success-rate
         startingStep: 2
         args:
-        - name: service-name
-          value: canary-demo-web.devops-lab-demos.svc.cluster.local
+        - name: app-name
+          value: canary-demo-web
       steps:
       - setWeight: 20
       - pause: {duration: 10m}
