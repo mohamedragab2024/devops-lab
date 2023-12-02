@@ -10,7 +10,7 @@ import (
 func main() {
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if val, err := strconv.ParseBool(r.URL.Query().Get("error")); err != nil && val == true {
+		if val, err := strconv.ParseBool(r.URL.Query().Get("error")); err == nil && val == true {
 			http.Error(w, "An error occurred", 500)
 			return
 		}
