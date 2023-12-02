@@ -312,4 +312,4 @@ Then open http://localhost:3100/rollouts
 You should see
 ![canary progressive UI](argorollout-ui.png)
 
-## Note : Do not forget to genrate some traffic to avoid progression failure due to insufficient metrics 
+## Note : Do not forget to generate some traffic to avoid progression failure due to insufficient metrics 
