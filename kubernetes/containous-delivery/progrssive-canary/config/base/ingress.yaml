@@ -20,4 +20,4 @@ spec:
               service:
                 name: canary-demo-web-stable
                 port:
-                  number: 80 
+                  number: http 
