@@ -12,10 +12,9 @@ spec:
     failureLimit: 3
     provider:
       prometheus:
-        address: http://prometheus.linkerd-viz.svc.cluster.local:9090
+        address: http://prometheus.monitoring.svc.cluster.local
         timeout: 40
         query: |
-          sum(irate(response_total{direction = "inbound", app="{{args.service-name}}",status_code !~"5.*"}[1m]))
+          sum(rate(nginx_ingress_controller_requests{controller_pod=~".*",controller_class=~".*",namespace=~".*",ingress=~"{{args.service-name}}",status!~"[4-5].*"}[2m])) by (ingress)
           /
-          sum(irate(response_total{direction = "inbound",app="{{args.service-name}}"}[1m]))
-
+          sum(rate(nginx_ingress_controller_requests{controller_pod=~".*",controller_class=~".*",namespace=~".*",ingress=~"{{args.service-name}}"}[2m])) by (ingress)
