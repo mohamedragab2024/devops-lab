@@ -12,7 +12,7 @@ spec:
     failureLimit: 3
     provider:
       prometheus:
-        address: http://prometheus.monitoring.svc.cluster.local
+        address: http://prometheus-server.monitoring.svc.cluster.local
         timeout: 40
         query: |
           sum(rate(nginx_ingress_controller_requests{controller_pod=~".*",controller_class=~".*",namespace=~".*",ingress=~"{{args.service-name}}",status!~"[4-5].*"}[2m])) by (ingress)
