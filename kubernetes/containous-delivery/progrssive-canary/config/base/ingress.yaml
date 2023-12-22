@@ -1,20 +1,23 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: canary-demo-web
-  namespace: devops-lab-demos
+  name:  canary-demo-web
   annotations:
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.ingress.kubernetes.io/service-upstream: "true"
 spec:
-  ingressClassName: "nginx"
+  tls:
+    - hosts:
+        -  canary-demo-web.ragab.home
+      secretName: ragab-home-tls 
   rules:
-  - host: canary-demo-web.ragab.biz
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: canary-demo-web-stable
-            port:
-              name: http
+    - host:  canary-demo-web.ragab.home
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: canary-demo-web-stable
+                port:
+                  number: 80 
