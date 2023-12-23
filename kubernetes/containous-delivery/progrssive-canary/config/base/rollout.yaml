@@ -38,6 +38,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.serviceAccountName
+        - name: IMAGE_VERSION
+          valueFrom:
+            fieldRef:
+              fieldPath: status.containerStatuses[0].image
         
   minReadySeconds: 30
   revisionHistoryLimit: 3
