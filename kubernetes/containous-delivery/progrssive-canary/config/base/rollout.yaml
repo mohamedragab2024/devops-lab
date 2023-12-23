@@ -41,7 +41,7 @@ spec:
         - name: IMAGE_VERSION
           valueFrom:
             fieldRef:
-              fieldPath: spec.containers[*].image
+              fieldPath: spec.containers
         
   minReadySeconds: 30
   revisionHistoryLimit: 3
