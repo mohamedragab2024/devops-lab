@@ -10,6 +10,9 @@
 - Text Manipulation
 - Bash Scripting
 - Networking and security
+- ubuntu , alpine , ..
+
+### 
 
 ### Web Servers and Reverse Proxies
 - Nginx
@@ -18,7 +21,6 @@
 
 ### Programming Skills for Automation
 - Python or Go
-
 ### Containerization
 - Docker
 - containerd
@@ -34,17 +36,23 @@
 - Istio
 
 ### Observability
-- Monitoring and Metrics (Prometheus and Grafana)
-- Logging (ELK or Loki)
-- Distributed Tracing (Jaeger)
+- Monitoring and Metrics (Prometheus , thanos, verctoria metric and Grafana)
+- Logging
+   (ELK or Loki)
+   fluentd
+- Distributed Tracing
+   Open telemetry
+   (Jaeger or honycomb or ..)
 
 ### CI/CD
 - Continuous Integration (Jenkins, GitHub Actions, GitLab, or Azure DevOps)
 - Continuous Deployment (ArgoCD)
+- ArgoRollout / Flagger (Canary , blue-green , experimentation , progressive delivery)
 
 ### Secret Management
 - HashiCorp Vault
 - External secrets
+- seald secret operator
 
 ### Infrastructure as Code
 - Terraform
